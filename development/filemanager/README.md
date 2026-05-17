@@ -169,7 +169,6 @@ Séparation des responsabilités :
 - OCR ;
 - comparaison IA ;
 - monitoring ;
-- tests unitaires ;
 - API REST ;
 - websocket temps réel.
 
