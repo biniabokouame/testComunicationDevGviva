@@ -1,0 +1,8 @@
+Django
+celery
+redis
+psycopg2-binary
+PyPDF2
+python-docx
+openpyxl
+xlrd

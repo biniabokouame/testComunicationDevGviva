@@ -1,0 +1,170 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des fichiers</title>
+
+    <link rel="stylesheet" href="{% static 'documents/css/style.css' %}">
+    <script src="{% static 'documents/js/status-refresh.js' %}" defer></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📁 Gestion des fichiers sans redondance</h1>
+
+    <div id="live-status-container"></div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message
+                {% if message.tags == 'success' %}success{% endif %}
+                {% if message.tags == 'error' %}error{% endif %}
+                {% if message.tags == 'warning' %}warning{% endif %}
+            ">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card">
+        <h2>📤 Upload d’un fichier</h2>
+
+        <form method="POST" enctype="multipart/form-data" class="upload-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="btn-primary">
+                Envoyer le fichier
+            </button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>✅ Fichiers enregistrés</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom du fichier</th>
+                    <th>Hash SHA256</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="documents-table-body">
+                {% for document in documents %}
+                    <tr>
+                        <td>📄 {{ document.filename }}</td>
+
+                        <td style="font-size:12px;">
+                            {{ document.file_hash|truncatechars:40 }}
+                        </td>
+
+                        <td>
+                            <span class="badge badge-success">
+                                Enregistré
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="actions">
+                                <form method="POST" action="{% url 'delete_document' document.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            class="btn-danger"
+                                            onclick="return confirm('Supprimer ce fichier ?');">
+                                        Supprimer
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">Aucun fichier enregistré</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>⚠️ Fichiers similaires en attente</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nouveau fichier</th>
+                    <th>Ancien fichier</th>
+                    <th>Similarité</th>
+                    <th>Comparaison</th>
+                    <th>Validation administrateur</th>
+                </tr>
+            </thead>
+
+            <tbody id="pending-table-body">
+                {% for pending in pending_documents %}
+                    <tr>
+                        <td>📄 {{ pending.new_filename }}</td>
+                        <td>📄 {{ pending.old_document.filename }}</td>
+
+                        <td>
+                            <span class="badge badge-warning">
+                                {{ pending.similarity_score }}%
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="comparison-box">
+                                <div class="content-box">
+                                    <div class="content-title">Ancien fichier</div>
+                                    <pre style="white-space:pre-wrap;">{{ pending.old_document.content|truncatechars:700 }}</pre>
+                                </div>
+
+                                <div class="content-box">
+                                    <div class="content-title">Nouveau fichier</div>
+                                    <pre style="white-space:pre-wrap;">{{ pending.new_content|truncatechars:700 }}</pre>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="actions">
+                                <form method="POST" action="{% url 'validate_pending_document' pending.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            class="btn-success"
+                                            onclick="return confirm('Valider le remplacement ?');">
+                                        ✅ Valider
+                                    </button>
+                                </form>
+
+                                <form method="POST" action="{% url 'reject_pending_document' pending.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            class="btn-danger"
+                                            onclick="return confirm('Refuser ce fichier ?');">
+                                        ❌ Refuser
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">Aucun fichier similaire en attente</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>
