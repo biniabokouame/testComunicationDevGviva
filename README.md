@@ -1,32 +1,66 @@
-# Gviva Test Communication et Dev
+# Gviva Test Comunication et dev
 
 Bienvenue 👋
 
-Ce repository contient ma solution au test technique Gviva.
 
-## Structure
+## Contexte
 
-- `communication/` : test de communication
-- `development/` : test de développement Django
+L’application doit être capable de gérer et traiter un grand volume de fichiers sans perte de données ni ralentissements majeurs.
 
-## Technologies utilisées
+L’objectif est d’évaluer :
 
-- Python
-- Django
-- Celery
-- Redis
-- SQLite
-- Docker
+- votre architecture backend ;
+- votre gestion des traitements lourds ;
+- votre qualité de code ;
+- votre capacité d’optimisation ;
+- votre maîtrise de Django et Python.
 
-## Fonctionnalités principales
+## Contraintes techniques
 
-- Upload de fichiers
-- Détection de doublons exacts
-- Détection de similarité
-- Validation administrateur
-- Traitement asynchrone
-- Mise à jour automatique de l’interface
+- Backend : Python + Django
+- Base de données : au choix
+- Le projet doit pouvoir supporter :
+  - l’upload massif de fichiers ;
+  - le traitement parallèle/asynchrone ;
+  - la reprise après erreur ;
+  - une bonne gestion mémoire ;
+  - une architecture scalable.
+
+## Ce qui sera observé
+
+- Structure du projet
+- Lisibilité du code
+- Performance
+- Gestion des erreurs
+- Sécurité
+- Qualité des commits Git
+- Documentation
+
+## Instructions
+
+1. Forkez ce repository
+2. Réalisez votre solution
+3. Documentez votre approche
+4. Envoyez le lien de votre fork
+
+
+## Important
+
+Le projet doit être pensé pour éviter :
+- les pertes de fichiers ;
+- les blocages mémoire ;
+- les traitements synchrones lourds ;
+- les timeouts.
 
 ## Livraison
 
-Projet développé dans le cadre du test technique Gviva.
+Ajoutez dans le README :
+
+- Instructions d’installation
+- Choix techniques
+- Limites éventuelles
+- Axes d’amélioration
+
+
+NB : Créez un dossier `communication` pour le test de communication ainsi qu’un dossier `development` pour le test de développement.
+Fork the repo and good luck 🚀
